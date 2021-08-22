@@ -1,0 +1,58 @@
+/* mainbody */
+#bodytitle {
+  background-color: #dbffff;
+}
+.pointer {
+  cursor: pointer;
+}
+.mainbody {
+  margin-bottom: 5px;
+}
+#resultErea, #sentenceErea, #sentenceEreaR{
+  background-color: #f7f7f7;
+}
+.button-erea {
+  display: flex;
+  margin-bottom: 5px;
+}
+/* #romanButton {
+  visibility: hidden;
+} */
+
+/* settings */
+summary {
+  display: block;
+  list-style: none;
+  width: 50px;
+  height: 35px;
+}
+#settei {
+  margin-top: 0px;
+  background-color: #ffb4b3;
+  width: 50px;
+  height: 35px;
+}
+#settings {
+  background-color: #ffebde;
+  margin-top: 5px;
+  margin-left: 3px;
+}
+
+/* codeTables */
+#codeTables {
+  margin-top: 5px;
+}
+#hayami {
+  margin-top: 0px;
+  background-color: #ffb4b3;
+  width: 130px;
+  height: 35px;
+}
+.tables {
+  display: flex;
+  align-items: flex-start;
+}
+
+#settei:hover, #hayami:hover {
+  background-color: #ffd4d4;
+}
