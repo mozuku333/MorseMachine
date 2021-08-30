@@ -10,9 +10,11 @@ const romanButton = document.getElementById('romanButton');
 romanButton.style.visibility = 'hidden';
 
 
-
 let timer;
 let timerSignal = 0;
+let dotTime = 140;
+let codeIntervalTime = 460;
+let customNum = null;
 let langValue = null;
 let startTime = null;
 let stopTime = null;
@@ -100,7 +102,7 @@ function pull() { // keyup
   function measureIntervalTime() {
     afterPullTime = Date.now();
     intervalTime = afterPullTime - stopTime;
-    if (intervalTime > 460) {
+    if (intervalTime > codeIntervalTime) {
       result.push("; ");
       switch (langValue) {
         case 'english': translateToEnglish();
@@ -122,16 +124,23 @@ function pull() { // keyup
   return stopTime;
 }
 
-function decideArrays() { // クリック時間を計算
+function decideArrays(c) { // クリック時間を計算
   var clickTime = stopTime - startTime;
-  if (clickTime < 140) {
+  if (clickTime < dotTime) {
     result.push("・ ");
-    signs.push(".");
+    signs.push("・");
   } else {
     result.push("－ ");
     signs.push("－");
+  };
+
+  if (c !== 1) {
+    resultErea.innerText = result.join("");
+  } else {
+    customSentenceErea.innerText = signs.join("");
+    customNum = clickTime;
+    decideCustomTimes(customNum);
   }
-  resultErea.innerText = result.join("");
 }
 
 function translateToEnglish() {// 英語
@@ -140,34 +149,33 @@ function translateToEnglish() {// 英語
   var binaryString = signs.join("");
   var alphabets = new Object();
   var alphabets = {
-    '.－':   "a",
-    '－...': "b",
-    '－.－.': "c",
-    '－..':  "d",
-    '.':    "e",
-    '..－.': "f",
-    '－－.':  "g",
-    '....': "h",
-    '..':   "i",
-    '.－－－': "j",
-    '－.－':  "k",
-    '.－..': "l",
+    '・－':   "a",
+    '－・・・': "b",
+    '－・－・': "c",
+    '－・・':  "d",
+    '・':    "e",
+    '・・－・': "f",
+    '－－・':  "g",
+    '・・・・': "h",
+    '・・':   "i",
+    '・－－－': "j",
+    '－・－':  "k",
+    '・－・・': "l",
     '－－':   "m",
-    '－.':   "n",
+    '－・':   "n",
     '－－－':  "o",
-    '.－－.': "p",
-    '－－.－': "q",
-    '.－.':  "r",
-    '...':  "s",
+    '・－－・': "p",
+    '－－・－': "q",
+    '・－・':  "r",
+    '・・・':  "s",
     '－':    "t",
-    '..－':  "u",
-    '...－': "v",
-    '.－－':  "w",
-    '－..－': "x",
-    '－.－－': "y",
-    '－－..': "z",
-    '.....': "　",
-    '...－.': "一文字消す"
+    '・・－':  "u",
+    '・・・－': "v",
+    '・－－':  "w",
+    '－・・－': "x",
+    '－・－－': "y",
+    '－－・・': "z",
+    '・・・・・': "　"
 
   }
 
@@ -188,58 +196,57 @@ function translateToJapanese() {// 日本語
   var binaryString = signs.join("");
   var katakana = new Object();
   var katakana = {
-    '.－': "イ",
-    '.－.－': "ロ",
-    '－...': "ハ",
-    '－.－.': "ニ",
-    '－..': "ホ",
-    '.': "ヘ",
-    '..－..': "ト",
-    '..－.': "チ",
-    '－－.': "リ",
-    '....': "ヌ",
-    '－.－－.': "ル",
-    '.－－－': "ヲ",
-    '－.－': "ワ",
-    '.－..': "カ",
+    '・－': "イ",
+    '・－・－': "ロ",
+    '－・・・': "ハ",
+    '－・－・': "ニ",
+    '－・・': "ホ",
+    '・': "ヘ",
+    '・・－・・': "ト",
+    '・・－・': "チ",
+    '－－・': "リ",
+    '・・・・': "ヌ",
+    '－・－－・': "ル",
+    '・－－－': "ヲ",
+    '－・－': "ワ",
+    '・－・・': "カ",
     '－－': "ヨ",
-    '－.': "タ",
+    '－・': "タ",
     '－－－': "レ",
-    '－－－.': "ソ",
-    '.－－.': "ツ",
-    '－－.－': "ネ",
-    '.－.': "ナ",
-    '...': "ラ",
+    '－－－・': "ソ",
+    '・－－・': "ツ",
+    '－－・－': "ネ",
+    '・－・': "ナ",
+    '・・・': "ラ",
     '－': "ム",
-    '..－': "ウ",
-    '.－..－': "ヰ",
-    '..－－': "ノ",
-    '.－...': "オ",
-    '...－': "ク",
-    '.－－': "ヤ",
-    '－..－': "マ",
-    '－.－－': "ケ",
-    '－－..': "フ",
+    '・・－': "ウ",
+    '・－・・－': "ヰ",
+    '・・－－': "ノ",
+    '・－・・・': "オ",
+    '・・・－': "ク",
+    '・－－': "ヤ",
+    '－・・－': "マ",
+    '－・－－': "ケ",
+    '－－・・': "フ",
     '－－－－': "コ",
-    '－.－－－': "エ",
-    '.－.－－': "テ",
-    '－－.－－': "ア",
-    '－.－.－': "サ",
-    '－.－..': "キ",
-    '－..－－': "ユ",
-    '－...－': "メ",
-    '..－.－': "ミ",
-    '－－.－.': "シ",
-    '.－－..': "ヱ",
-    '－－..－': "ヒ",
-    '－..－.': "モ",
-    '.－－－.': "セ",
-    '－－－.－': "ス",
-    '.－.－.': "ン",
-    '..': "゛",
-    '..－－.': "゜",
-    '.－－.－': "ー",
-    '...－.': "一文字消す"
+    '－・－－－': "エ",
+    '・－・－－': "テ",
+    '－－・－－': "ア",
+    '－・－・－': "サ",
+    '－・－・・': "キ",
+    '－・・－－': "ユ",
+    '－・・・－': "メ",
+    '・・－・－': "ミ",
+    '－－・－・': "シ",
+    '・－－・・': "ヱ",
+    '－－・・－': "ヒ",
+    '－・・－・': "モ",
+    '・－－－・': "セ",
+    '－－－・－': "ス",
+    '・－・－・': "ン",
+    '・・': "゛",
+    '・・－－・': "゜",
+    '・－－・－': "ー"
   };
 
   for (var k in katakana) {
@@ -308,29 +315,28 @@ function translateToNumbers() { // 数字
   var binaryString = signs.join("");
   var nomalNumbers = new Object();
   nomalNumbers = {
-    '.－－－－': "1",
-    '..－－－': "2",
-    '...－－': "3",
-    '....－': "4",
-    '.....': "5",
-    '－....': "6",
-    '－－...': "7",
-    '－－－..': "8",
-    '－－－－.': "9",
-    '－－－－－': "0",
-    '...－.': "一文字消す"
+    '・－－－－': "1",
+    '・・－－－': "2",
+    '・・・－－': "3",
+    '・・・・－': "4",
+    '・・・・・': "5",
+    '－・・・・': "6",
+    '－－・・・': "7",
+    '－－－・・': "8",
+    '－－－－・': "9",
+    '－－－－－': "0"
   };
   var abbrevationNumbers = new Object();
   abbrevationNumbers = {
-    '.－': "1",
-    '..－': "2",
-    '...－': "3",
-    '....－': "4",
-    '.....': "5",
-    '－....': "6",
-    '－...': '7',
-    '－..': "8",
-    '－.': "9",
+    '・－': "1",
+    '・・－': "2",
+    '・・・－': "3",
+    '・・・・－': "4",
+    '・・・・・': "5",
+    '－・・・・': "6",
+    '－・・・': '7',
+    '－・・': "8",
+    '－・': "9",
     '－': "0"
   };
 
@@ -358,4 +364,60 @@ function translateToNumbers() { // 数字
 
 function sliceCharacter() { // 文字消す関数
 
+};
+
+const customSentenceErea = document.getElementById('custom-sentenceErea');
+const customizeDot = document.getElementById('customizeDot');
+customizeDot.addEventListener('input', customizeDotTime);
+const customizeBar = document.getElementById('customizeBar');
+customizeBar.addEventListener('input', customizeBarTime);
+const measureErea1 = document.getElementById('measure1');
+const recommendErea1 = document.getElementById('recommend1');
+const recommendErea2 = document.getElementById('recommend2');
+const measureTimes = [];
+
+document.body.addEventListener('keydown',
+event => {
+  if (event.key === 'j') {
+    downCustomize();
+  }
+});
+document.body.addEventListener('keyup',
+event => {
+  if (event.key === 'j') {
+    upCustomize();
+  }
+});
+function customizeDotTime(event) {
+  console.log("customizeDot()");
+  console.log(event.currentTarget.value);
+  dotTime = event.currentTarget.value;
+};
+function customizeBarTime(event) {
+  console.log("customizeBar()");
+  console.log(event.currentTarget.value);
+  barTime = event.currentTarget.value;
+};
+function downCustomize() { // カスタマイズ-up
+  console.log("downCustomize()");
+
+  startTime = Date.now();
+  music.play();
+  return startTime;
+};
+function upCustomize() { // カスタマイズ-down
+  console.log("upCustomize()");
+
+  stopTime = Date.now();
+  music.pause();
+  music.currentTime = 0;
+  decideArrays(1);
+};
+function decideCustomTimes(r) {
+  console.log("decideCustomTimes()");
+
+  measureTimes.push(String(r));
+  measureErea1.innerText = String(r);
+  recommendErea1.innerText = String(r);
+  recommendErea2.innerText = String(r * 3);
 };

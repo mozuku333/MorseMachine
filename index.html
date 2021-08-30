@@ -9,12 +9,13 @@
 <body>
   <div class="mainbody">
     <h1 id="bodytitle" class="pointer" onclick="reload()" >モールス符号変換機</h1>
+    <p>nキーを押すと信号が打てます。ローマ字モードではmキーを押すと日本語変換されます。ローマ字から日本語への変換は一文字づつ行ってください。</p>
     <div class="radios">
       <input type="radio" name="language" value="japanese" onclick="changeRadio(0)"><label for="japan">日本語</label>
       <input type="radio" name="language" value="roman" onclick="changeRadio(1)"><label for="rome">ローマ字</label>
       <input type="radio" name="language" value="english" onclick="changeRadio(0)"><label for="english">English</label>
       <input type="radio" name="language" value="number" onclick="changeRadio(0)"><label for="number">数字</label>
-      <input type="button" value="PUSH HERE(n)" onmousedown="push()" onmouseup="pull()"><br>
+      <input type="button" value="PUSH (n)" onmousedown="push()" onmouseup="pull()"><br>
     </div>
     <div class="button-erea">
       <input type="button" value="CLEAR" onclick="clearSentence(0)">
@@ -30,17 +31,29 @@
     </div>
   </div>
   <div id="setting">
-    <details>
+    <details open>
       <summary><h2 id="settei" class="pointer">設定</h2></summary>
       <ul id="settings">
         <li>音量：<input type="range" id="volume" value="1.0" min="0.0" max="2.0" step="0.1"></li>
         <li>数字：<input type="radio" name="numberSetting" value="nomal" checked="checked"><label for="nomal">普通</label><input type="radio" name="numberSetting" value="abbreviation"><label for="abbreviation">略体</label></li>
-        <li>音間隔：(カスタマイズ)</li>
+      </ul>
+      <ul id="settings">
+        <li>音カスタマイズ</li>
+        <input type="button" value="PUSH ( j )" id="customButton" onmousedown="downCustomize()" onmouseup="upCustomize()">　<span class="settings-sentences">信号を入力すると推奨値が計測されるよ</span><br>
+        <div>デフォルト設定の場合の信号↓↓</div>
+        <div id="custom-sentenceErea">　</div>
+        <div class="measure">計測値：　　
+          <div id="measure1"></div><div>ミリ秒</div></div>
+        <div class="recommend">推奨値：　　"・"：　
+          <div id="recommend1"></div><div>ミリ秒　信号間隔：</div><div id="recommend2">　</div>ミリ秒以内</div>
+        <div class="settings-sentences">初期設定　　"・"：<input type="text" value="140" id="customizeDot">ミリ秒以内　信号間隔：<input type="text" value="460" id="customizeBar">ミリ秒以内</div>
+        <div class="settings-sentences">※信号"・"、信号"ー"、信号の間隔、文字の間隔をそれぞれ決めることができます。<br>①PUSH ( j )ボタンで信号を打ちます。<br>②「推奨値」は計測した信号の音の長さを、"・"とみなしたときに推奨する信号の間隔です。<br>③推奨値を考慮して、「初期設定」の入力欄に数字を入力しましょう。<br>④入力すると同時に音の長さが反映されます。</div>
+        <div class="settings-sentences">※信号"ー"の音の長さは信号"・"より長い音の長さであり、文字間隔の時間は信号感覚の音の長さより長い時間なので、カスタマイズ不要です。</div>
       </ul>
     </details>
   </div>
   <div id="codeTables">
-    <details class="detail-ct">
+    <details class="detail-ct" open>
       <summary><h2 id="hayami" class="pointer">符号早見表</h2></summary>
       <div class="tables">
         <table id="japanese-table" border="1">
@@ -241,15 +254,15 @@
             <td>・ー・ー・</td>
           </tr>
           <tr>
-            <td>゛（濁点）</td>
+            <td>゛</td>
             <td>・・</td>
           </tr>
           <tr>
-            <td>゜（半濁点）</td>
+            <td>゜</td>
             <td>・・ーー・</td>
           </tr>
           <tr>
-            <td>ー（長音）</td>
+            <td>ー</td>
             <td>・ーー・ー</td>
           </tr>
         </table>
